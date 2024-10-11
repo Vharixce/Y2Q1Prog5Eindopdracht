@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/about-us/{id}', [AboutUsController::class, 'index'])->name('about-us');
+Route::get('/about-us/{id?}', [AboutUsController::class, 'index'])->name('about-us');
 
 
 Route::get('products/{id}', function(string $id) {
