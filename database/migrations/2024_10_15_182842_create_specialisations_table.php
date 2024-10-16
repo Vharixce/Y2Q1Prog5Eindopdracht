@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('class');
-            $table->string('specialisations');
+            $table->string('ability');
+            $table->string('cooldown');
         });
     }
 

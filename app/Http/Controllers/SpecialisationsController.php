@@ -1,33 +1,33 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Specialisation;
 use Illuminate\Http\Request;
 
 class SpecialisationsController extends Controller
 {
     public function index()
     {
+        // Haal alle specialisaties op uit de database
+        $specialisations = Specialisation::all();
 
-        return view('specialisations.index');
-//        return view('specialisations.create');
-//        return view('specialisations.details');
+        // Stuur de data naar de view
+        return view('specialisations.index', compact('specialisations'));
+//        return view('specialisations.index');
 
     }
     public function create()
     {
-
-//        return view('specialisations.index');
         return view('specialisations.create');
-//        return view('specialisations.details');
 
     }
     public function details()
     {
-
-//        return view('specialisations.index');
-//        return view('specialisations.create');
         return view('specialisations.details');
 
     }
+//    public function show(Specialisation $specialisation){
+//        return view('specialisations.show', ['specialisation' => $specialisation]);
+//    }
+
 }
