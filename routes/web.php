@@ -15,14 +15,16 @@ Route::get('/about-us/{id?}', [AboutUsController::class, 'index'])->name('about-
 //    return view('about');
 //})->name('about');
 
+
+
 Route::get('/', [HomeController::class, 'showHomeView'])->name('home');
 
 Route::get('/about-us/{id?}', [AboutUsController::class, 'index'])->name('about-us');
 
 Route::get('/contact', [ContactController::class, 'showContactView'])->name('contact');
 
-Route::get('/specialisations', [SpecialisationsController::class, 'showSpecialisationsView'])->name('specialisations');
-
+//Route::get('/specialisations', [SpecialisationsController::class, 'showSpecialisationsView'])->name('specialisations');
+Route::resource('/specialisations', SpecialisationsController::class);
 
 
 //Route::get('products/{id}', function(string $id) {
