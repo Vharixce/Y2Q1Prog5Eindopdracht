@@ -22,6 +22,7 @@ class Specialisation extends Model
      */
     protected $fillable = ['class', 'specialisations', 'cooldown'];
 
+
     /**
      * Geef aan of de timestamps 'created_at' en 'updated_at' moeten worden gebruikt.
      * Dit is standaard ingeschakeld, maar als je deze niet hebt, kun je het uitschakelen.
