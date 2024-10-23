@@ -3,10 +3,11 @@
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\SpecialisationsController;
+use App\Http\Controllers\ClassTypeController;
+
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Specialisation;
+use App\Models\ClassType;
 
 
 
@@ -24,7 +25,12 @@ Route::get('/about-us/{id?}', [AboutUsController::class, 'index'])->name('about-
 Route::get('/contact', [ContactController::class, 'showContactView'])->name('contact');
 
 //Route::get('/specialisations', [SpecialisationsController::class, 'showSpecialisationsView'])->name('specialisations');
-Route::resource('/specialisations', SpecialisationsController::class);
+
+
+Route::resource('classTypes', ClassTypeController::class);
+Route::resource('class_types', ClassTypeController::class);
+
+
 
 
 //Route::get('products/{id}', function(string $id) {

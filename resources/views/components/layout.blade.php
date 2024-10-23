@@ -15,7 +15,7 @@
     <x-nav-l href="{{ route('home') }}">Home</x-nav-l>
     <x-nav-l href="{{ route('about-us') }}">About</x-nav-l>
     <x-nav-l href="{{ route('contact') }}">Contact</x-nav-l>
-    <x-nav-l href="{{ route('specialisations.index') }}">Specialisations</x-nav-l>
+    <x-nav-l href="{{ route('class_types.index') }}">Specialisations</x-nav-l>
 
 </nav>
 <!-- Content slot -->
