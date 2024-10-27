@@ -60,4 +60,10 @@ class ClassTypeController extends Controller
         $classType->delete();
         return redirect()->route('classTypes.index')->with('success', 'ClassType deleted successfully');
     }
+
+    public function show(ClassType $classType)
+    {
+        return view('classType.show', compact('classType'));
+    }
+
 }
