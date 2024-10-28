@@ -66,4 +66,5 @@ class ClassTypeController extends Controller
         return view('classType.show', compact('classType'));
     }
 
+
 }
