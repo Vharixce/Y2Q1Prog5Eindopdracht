@@ -67,4 +67,21 @@ class ClassTypeController extends Controller
     }
 
 
+
+
+
+
+
+//searching methodes
+    public function filter(Request $request)
+    {
+        // Get the class type to filter by
+        $classType = $request->input('class_type');
+
+        // Fetch items based on the filter, or all items if no filter is applied
+        $classTypes = $classType ? ClassType::where('class', $classType)->get() : ClassType::all();
+
+        return view('classType.index', compact('classTypes', 'classType'));
+    }
+
 }

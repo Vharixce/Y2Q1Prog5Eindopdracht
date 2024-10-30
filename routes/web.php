@@ -29,6 +29,9 @@ Route::get('/contact', [ContactController::class, 'showContactView'])->name('con
 
 Route::resource('classTypes', ClassTypeController::class);
 Route::resource('class_types', ClassTypeController::class);
+Route::get('/class-types', [ClassTypeController::class, 'index'])->name('classTypes.index');
+Route::get('/class-types/filter', [ClassTypeController::class, 'filter'])->name('classTypes.filter');
+
 
 
 
