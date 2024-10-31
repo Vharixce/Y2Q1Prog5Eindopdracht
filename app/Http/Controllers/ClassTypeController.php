@@ -75,13 +75,29 @@ class ClassTypeController extends Controller
 //searching methodes
     public function filter(Request $request)
     {
-        // Get the class type to filter by
+        // Get filter and search inputs
         $classType = $request->input('class_type');
+        $searchTerm = $request->input('search');
 
-        // Fetch items based on the filter, or all items if no filter is applied
-        $classTypes = $classType ? ClassType::where('class', $classType)->get() : ClassType::all();
+        // Query with both class filter and search term
+        $query = ClassType::query();
 
-        return view('classType.index', compact('classTypes', 'classType'));
+        if ($classType) {
+            $query->where('class', $classType);
+        }
+
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('ability', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('class', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('cooldown', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('damage', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        // Retrieve results and pass to view
+        $classTypes = $query->get();
+
+        return view('classType.index', compact('classTypes', 'classType', 'searchTerm'));
     }
-
 }
