@@ -8,11 +8,15 @@
     <div class="filter-buttons">
         <form action="{{ route('classTypes.filter') }}" method="GET">
             <input type="text" name="search" placeholder="Search..." value="{{ $searchTerm ?? '' }}" class="search-input">
-            <button type="submit" class="filter-button search-button">Search</button>
-            <button type="submit" name="class_type" value="Light" class="filter-button">Light</button>
-            <button type="submit" name="class_type" value="Medium" class="filter-button">Medium</button>
-            <button type="submit" name="class_type" value="Heavy" class="filter-button">Heavy</button>
-            <!-- Updated button to clear filters -->
+            <select name="class_type" id="class_type" onchange="this.form.submit()">
+                <option value="">Select...</option>
+                <option value="light" {{ request('weight') == 'light' ? 'selected' : '' }}>light</option>
+                <option value="medium" {{ request('weight') == 'medium' ? 'selected' : '' }}>medium</option>
+                <option value="heavy" {{ request('weight') == 'heavy' ? 'selected' : '' }}>heavy</option>
+            </select>
+
+            <!-- Other form content, buttons, or fields as needed -->
+            <button type="submit">Search</button>
             <a href="{{ route('classTypes.index') }}" class="filter-button clear-button">Reset filters</a>
         </form>
     </div>

@@ -5,10 +5,12 @@
         @csrf
         @method('PUT')
 
-        <div>
-            <label for="class">Class:</label>
-            <input type="text" id="class" name="class" value="{{ $classType->class }}" required>
-        </div>
+        <label for="class">Class</label>
+        <select name="class" id="class" required>
+            <option value="light">Light</option>
+            <option value="medium">Medium</option>
+            <option value="heavy">Heavy</option>
+        </select>
 
         <div>
             <label for="ability">Ability:</label>

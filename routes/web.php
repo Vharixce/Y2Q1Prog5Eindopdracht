@@ -13,6 +13,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
+Route::get('/search', [ClassTypeController::class, 'search'])->name('search');
 
 // Middleware for admin routes
 Route::middleware([AdminMiddleware::class])->group(function () {
