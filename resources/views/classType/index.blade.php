@@ -21,21 +21,29 @@
         </form>
     </div>
 
+
     <!-- Display Filtered Results -->
     <ul>
         @foreach($classTypes as $classType)
             <li>
                 Class: {{ $classType->class }} <br>
                 Ability: {{ $classType->ability }} <br>
-                <a href="{{ route('class_types.show', $classType->id) }}" class="custom-button">More Details</a>
-                <a href="{{ route('class_types.edit', $classType->id) }}" class="custom-button">Edit</a>
-                <form action="{{ route('class_types.destroy', $classType->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="custom-button" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
-                </form>
+
+                <!-- Conditionally show the buttons based on ownership -->
+                @if($classType->user_id == $userId)
+                    <a href="{{ route('class_types.edit', $classType->id) }}" class="custom-button">Edit</a>
+                    <form action="{{ route('class_types.destroy', $classType->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="custom-button" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                    </form>
+                @else
+                    <span class="custom-button disabled">Edit</span>
+                    <span class="custom-button disabled">Delete</span>
+                @endif
             </li>
         @endforeach
+
     </ul>
 
     <!-- Optional message if no items match the filter -->

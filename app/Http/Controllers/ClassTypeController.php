@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\ClassType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClassTypeController extends Controller
 {
     // 1. List all class types (Read)
     public function index()
     {
-        $classTypes = ClassType::all();
-        return view('classType.index', compact('classTypes'));
+        $classTypes = ClassType::with('user')->get();
+        $userId = Auth::id();
+        return view('classType.index', compact('classTypes', 'userId'));
     }
 
     // 2. Show create form (Create)
@@ -30,7 +32,14 @@ class ClassTypeController extends Controller
             'cooldown' => 'required'
         ]);
 
-        ClassType::create($request->all());
+        ClassType::create([
+            'class' => $request->class,
+            'ability' => $request->ability,
+            'damage' => $request->damage,
+            'cooldown' => $request->cooldown,
+            'user_id' => auth()->id(),  // Set user ID
+        ]);
+
         return redirect()->route('classTypes.index')->with('success', 'ClassType created successfully');
     }
 
@@ -66,13 +75,7 @@ class ClassTypeController extends Controller
         return view('classType.show', compact('classType'));
     }
 
-
-
-
-
-
-
-//searching methodes
+    // 7. Filter and search class types
     public function filter(Request $request)
     {
         // Get filter and search inputs
@@ -97,7 +100,8 @@ class ClassTypeController extends Controller
 
         // Retrieve results and pass to view
         $classTypes = $query->get();
+        $userId = Auth::id();
 
-        return view('classType.index', compact('classTypes', 'classType', 'searchTerm'));
+        return view('classType.index', compact('classTypes', 'classType', 'searchTerm', 'userId'));
     }
 }
