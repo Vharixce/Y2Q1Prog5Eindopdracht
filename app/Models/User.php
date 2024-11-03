@@ -18,6 +18,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
 
+    public function isAdmin()
+    {
+        return $this->is_admin; // Assuming `is_admin` is the field name in the users table for admin status
+    }
+
+
 
     protected $fillable = [
         'name',

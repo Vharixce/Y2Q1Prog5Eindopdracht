@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class SomeAdminController extends Controller
 {
+
     public function index()
     {
         $classTypes = ClassType::all();

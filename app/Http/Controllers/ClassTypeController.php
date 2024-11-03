@@ -13,12 +13,38 @@ class ClassTypeController extends Controller
 //    {
 //        $this->middleware('auth')->only(['create', 'store']);
 //    }
+
+
     public function index()
     {
-        $classTypes = ClassType::with('user')->get();
-        $userId = Auth::id();
+        $userId = auth()->id();
+
+        if (auth()->user() && auth()->user()->isAdmin()) {
+            // Admins see all items, both active and inactive
+            $classTypes = ClassType::with('user')->get();
+        } else {
+            // Non-admin users only see active items
+            $classTypes = ClassType::with('user')->where('active', true)->get();
+        }
+
         return view('classType.index', compact('classTypes', 'userId'));
     }
+
+
+    public function toggleActive(ClassType $classType)
+    {
+        $classType->active = !$classType->active; // Toggle the active status
+        $classType->save();
+
+        return redirect()->route('classTypes.index')->with('success', 'ClassType status updated successfully');
+    }
+
+//    public function index()
+//    {
+//        $classTypes = ClassType::with('user')->get();
+//        $userId = Auth::id();
+//        return view('classType.index', compact('classTypes', 'userId'));
+//    }
 
     // 2. Show create form (Create)
     public function create()
@@ -82,17 +108,18 @@ class ClassTypeController extends Controller
     // 7. Filter and search class types
     public function filter(Request $request)
     {
-        // Get filter and search inputs
         $classType = $request->input('class_type');
         $searchTerm = $request->input('search');
 
-        // Query with both class filter and search term
+        // Start a new query
         $query = ClassType::query();
 
+        // Apply class type filter if provided
         if ($classType) {
             $query->where('class', $classType);
         }
 
+        // Apply search filter if provided
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('ability', 'LIKE', "%{$searchTerm}%")
@@ -102,10 +129,15 @@ class ClassTypeController extends Controller
             });
         }
 
-        // Retrieve results and pass to view
+        // Only include active items for non-admin users
+        if (!auth()->user() || !auth()->user()->isAdmin()) {
+            $query->where('active', true);
+        }
+
         $classTypes = $query->get();
-        $userId = Auth::id();
+        $userId = auth()->id();
 
         return view('classType.index', compact('classTypes', 'classType', 'searchTerm', 'userId'));
     }
+
 }

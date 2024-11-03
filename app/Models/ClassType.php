@@ -13,7 +13,8 @@ class ClassType extends Model
         'ability',
         'damage',
         'cooldown',
-        'user_id'
+        'user_id',
+        'active',
     ];
 
 

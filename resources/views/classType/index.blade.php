@@ -10,6 +10,7 @@
     @endif
 
     <!-- Filter Form with Search Input -->
+
     <div class="filter-buttons">
         <form action="{{ route('classTypes.filter') }}" method="GET">
             <input type="text" name="search" placeholder="Search..." value="{{ $searchTerm ?? '' }}" class="search-input">
@@ -29,13 +30,19 @@
 
     <!-- Display Filtered Results -->
     <ul>
+        <!-- Display Active Status for Admins -->
         @foreach($classTypes as $classType)
             <li>
                 Class: {{ $classType->class }} <br>
                 Ability: {{ $classType->ability }} <br>
 
+                <!-- Display the active status only for admins -->
+                @if(auth()->user() && auth()->user()->isAdmin())
+                    <p>Status: {{ $classType->active ? 'Active' : 'Inactive' }}</p>
+                @endif
+
                 <!-- Conditionally show the buttons based on ownership -->
-                @if($classType->user_id == $userId)
+                @if($classType->user_id == $userId || (auth()->user() && auth()->user()->isAdmin()))
                     <a href="{{ route('class_types.edit', $classType->id) }}" class="custom-button">Edit</a>
                     <form action="{{ route('class_types.destroy', $classType->id) }}" method="POST" style="display:inline;">
                         @csrf
@@ -48,6 +55,7 @@
                 @endif
             </li>
         @endforeach
+
 
     </ul>
 

@@ -20,6 +20,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
+Route::patch('/class-types/{classType}/toggle', [ClassTypeController::class, 'toggleActive'])->name('classTypes.toggleActive');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/classTypes/create', [ClassTypeController::class, 'create'])->name('classTypes.create');
