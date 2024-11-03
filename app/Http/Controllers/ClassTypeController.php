@@ -54,10 +54,10 @@ class ClassTypeController extends Controller
         }
 
         $request->validate([
-            'class' => 'required',
-            'ability' => 'required',
-            'damage' => 'required|integer',
-            'cooldown' => 'required'
+            'class' => 'required|string|max:255',
+            'ability' => 'required|string|max:255',
+            'damage' => 'required|integer|min:0',
+            'cooldown' => 'required|integer|min:0',
         ]);
 
         ClassType::create([
