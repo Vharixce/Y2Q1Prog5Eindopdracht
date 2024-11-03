@@ -31,8 +31,28 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                'unique:' . User::class,
+
+                'email:rfc,dns' // Controleert of het e-mailadres geldig is
+            ],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            [
+                'name.required' => 'The name field is required.',
+                'email.required' => 'The email field is required.',
+                'email.email' => 'Please enter a valid email address.',
+                'email.unique' => 'This email address is already registered.',
+                'email.dns' => 'The domain of the email address does not exist.', // Custom error message for DNS
+                'password.required' => 'The password is required.',
+                'password.confirmed' => 'The passwords do not match.',
+
+            ]
+
         ]);
 
         $user = User::create([

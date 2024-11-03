@@ -51,6 +51,9 @@ Route::resource('class_types', ClassTypeController::class);
 Route::get('/class-types', [ClassTypeController::class, 'index'])->name('classTypes.index');
 Route::get('/class-types/filter', [ClassTypeController::class, 'filter'])->name('classTypes.filter');
 
+Route::get('/account', [UserController::class, 'edit'])->name('account.edit')->middleware('auth');
+Route::put('/account', [UserController::class, 'update'])->name('account.update')->middleware('auth');
+
 // User profile routes
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
 Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
