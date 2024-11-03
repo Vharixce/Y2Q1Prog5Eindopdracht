@@ -2,7 +2,12 @@
     <h1>Class Types</h1>
     <p>Welcome to the class types page!</p>
 
-    <a href="{{ route('classTypes.create') }}" class="button create-button">Create New Class Type</a>
+    <!-- Conditionally render the button -->
+    @if (Auth::check())
+        <a href="{{ route('classTypes.create') }}" class="button create-button">Create New Class Type</a>
+    @else
+        <button class="button create-button" disabled title="You must be logged in to create a new class type">Create New Class Type</button>
+    @endif
 
     <!-- Filter Form with Search Input -->
     <div class="filter-buttons">

@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 class ClassTypeController extends Controller
 {
     // 1. List all class types (Read)
+//    public function __construct()
+//    {
+//        $this->middleware('auth')->only(['create', 'store']);
+//    }
     public function index()
     {
         $classTypes = ClassType::with('user')->get();

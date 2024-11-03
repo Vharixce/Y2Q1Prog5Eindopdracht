@@ -9,9 +9,23 @@ use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController; // Ensure you import your controller at the top
 
+use App\Http\Controllers\SomeAdminController;
+
+Route::middleware(['auth', 'can:isAdmin'])->group(function () {
+    Route::get('/admin/dashboard', [SomeAdminController::class, 'index'])->name('admin.dashboard');
+});
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/classTypes/create', [ClassTypeController::class, 'create'])->name('classTypes.create');
+    Route::post('/classTypes', [ClassTypeController::class, 'store'])->name('classTypes.store');
+});
+
 
 Route::get('/search', [ClassTypeController::class, 'search'])->name('search');
 
