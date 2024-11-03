@@ -21,5 +21,10 @@
     <label for="cooldown">Cooldown</label>
     <input type="text" name="cooldown" id="cooldown" required>
 
+    <!-- confirmation phrase input -->
+
     <button type="submit">Create Class Type</button>
 </form>
+
+
+

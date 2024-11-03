@@ -8,13 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ClassTypeController extends Controller
 {
-    // 1. List all class types (Read)
-//    public function __construct()
-//    {
-//        $this->middleware('auth')->only(['create', 'store']);
-//    }
-
-
     public function index()
     {
         $userId = auth()->id();
@@ -30,31 +23,36 @@ class ClassTypeController extends Controller
         return view('classType.index', compact('classTypes', 'userId'));
     }
 
-
     public function toggleActive(ClassType $classType)
     {
-        $classType->active = !$classType->active; // Toggle the active status
+        $classType->active = !$classType->active;
         $classType->save();
 
         return redirect()->route('classTypes.index')->with('success', 'ClassType status updated successfully');
     }
 
-//    public function index()
-//    {
-//        $classTypes = ClassType::with('user')->get();
-//        $userId = Auth::id();
-//        return view('classType.index', compact('classTypes', 'userId'));
-//    }
+    // Confirmation page view
+    public function confirm()
+    {
+        return view('classType.confirm');
+    }
 
-    // 2. Show create form (Create)
     public function create()
     {
+        if (!session()->has('confirmed')) {
+            return redirect()->route('classTypes.confirm');
+        }
+
         return view('classType.create');
     }
 
-    // 3. Store the new class type (Create)
     public function store(Request $request)
     {
+        // Check if the confirmation is in the session
+        if (!session()->has('confirmed')) {
+            return redirect()->route('classTypes.confirm')->with('error', 'Please confirm before creating an item.');
+        }
+
         $request->validate([
             'class' => 'required',
             'ability' => 'required',
@@ -67,36 +65,49 @@ class ClassTypeController extends Controller
             'ability' => $request->ability,
             'damage' => $request->damage,
             'cooldown' => $request->cooldown,
-            'user_id' => auth()->id(),  // Set user ID
+            'user_id' => auth()->id(),
         ]);
 
         return redirect()->route('classTypes.index')->with('success', 'ClassType created successfully');
     }
 
-    // 4. Show the form to edit the class type (Update)
+
+    // Process confirmation text input
+    public function confirmPost(Request $request)
+    {
+        $request->validate([
+            'confirmationText' => 'required|in:I am human and I love the game The Finals',
+        ]);
+
+        // Store confirmation in session
+        session(['confirmed' => true]);
+
+        return redirect()->route('classTypes.create')->with('success', 'Confirmation successful. You may now add items.');
+    }
+
     public function edit(ClassType $classType)
     {
         return view('classType.edit', compact('classType'));
     }
 
-    // 5. Update the class type (Update)
     public function update(Request $request, ClassType $classType)
     {
         $request->validate([
             'class' => 'required',
             'ability' => 'required',
             'damage' => 'required|integer',
-            'cooldown' => 'required'
+            'cooldown' => 'required',
         ]);
 
         $classType->update($request->all());
+
         return redirect()->route('classTypes.index')->with('success', 'ClassType updated successfully');
     }
 
-    // 6. Delete a class type (Delete)
     public function destroy(ClassType $classType)
     {
         $classType->delete();
+
         return redirect()->route('classTypes.index')->with('success', 'ClassType deleted successfully');
     }
 
@@ -105,21 +116,18 @@ class ClassTypeController extends Controller
         return view('classType.show', compact('classType'));
     }
 
-    // 7. Filter and search class types
+    // Filter and search class types
     public function filter(Request $request)
     {
         $classType = $request->input('class_type');
         $searchTerm = $request->input('search');
 
-        // Start a new query
         $query = ClassType::query();
 
-        // Apply class type filter if provided
         if ($classType) {
             $query->where('class', $classType);
         }
 
-        // Apply search filter if provided
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('ability', 'LIKE', "%{$searchTerm}%")
@@ -139,5 +147,4 @@ class ClassTypeController extends Controller
 
         return view('classType.index', compact('classTypes', 'classType', 'searchTerm', 'userId'));
     }
-
 }

@@ -23,6 +23,11 @@ Route::middleware(['auth'])->group(function () {
 Route::patch('/class-types/{classType}/toggle', [ClassTypeController::class, 'toggleActive'])->name('classTypes.toggleActive');
 
 
+
+Route::get('/class-types/confirm', [ClassTypeController::class, 'confirm'])->name('classTypes.confirm');
+Route::post('/class-types/confirm', [ClassTypeController::class, 'confirmPost'])->name('classTypes.confirmPost');
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/classTypes/create', [ClassTypeController::class, 'create'])->name('classTypes.create');
     Route::post('/classTypes', [ClassTypeController::class, 'store'])->name('classTypes.store');

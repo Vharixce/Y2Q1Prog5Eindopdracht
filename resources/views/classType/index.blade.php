@@ -49,10 +49,12 @@
                         @method('DELETE')
                         <button type="submit" class="custom-button" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
                     </form>
+                    <a href="{{ route('class_types.show', $classType->id) }}" class="custom-button">View Details</a>
                 @else
                     <span class="custom-button disabled">Edit</span>
                     <span class="custom-button disabled">Delete</span>
                 @endif
+
             </li>
         @endforeach
 
